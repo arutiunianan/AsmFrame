@@ -24,11 +24,16 @@ ExitDos macro
         int 21h
 endm
 
+ErrorExit macro
+        call PrintErrorFrame 
+        ExitDos
+endm
+
 ;-------------------------
 ;CONSTANTS
 ;-------------------------
 
-VIDEOSEG   = 0b800h     ; -  VIDEOSEG textmode
+VIDEOSEG   = 0b800h     ; - VIDEOSEG textmode
 CMDARGS    = 80h        ; - syms in cmd line , 82h - first symbol in cmd params
 STARTPOINT = 320d       ; - upper left frame corner
 EROORPOINT = 3052d      ; - upper left error frame corner
