@@ -90,11 +90,9 @@ ReadDecNum proc
         cmp ax, 10d
         jb @@if_dec
 
-;----error----
-        call PrintErrorFrame 
-        ExitDos
+;----error if input value is not dec num----
+        ErrorExit 
         
-
         endp
 
 
@@ -140,9 +138,8 @@ ReadHexNum proc
         cmp ax, 16d
         jb @@if_dechex
 
-;----error----
-        call PrintErrorFrame 
-        ExitDos
+;----error if input value is not hex num----
+        ErrorExit
 
         endp
 
@@ -210,9 +207,8 @@ ReadArr proc
         cmp dl, TWO
         je @@arr_two
 
-;----error----
-        call PrintErrorFrame ;error
-        ExitDos
+;----error if input value is not array num or USERARRAY----
+        ErrorExit
 
 @@arr_input:
         inc si
@@ -258,9 +254,8 @@ PrintFrame proc
         push cx
         jg @@print_frame
 
-;----error----
-        call PrintErrorFrame
-        ExitDos
+;----error if height of frame <2----
+        ErrorExit
 
 @@print_frame:
         mov si, [bp+4]
@@ -332,9 +327,8 @@ PrintLine proc
         cmp cx, 1d
         jg @@first_sym
 
-;----error----
-        call PrintErrorFrame
-        ExitDos
+;----error if width of frame <2----
+        ErrorExit
 
 @@first_sym:
         mov cx, 1d
