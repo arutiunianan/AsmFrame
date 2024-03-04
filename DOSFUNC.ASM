@@ -38,7 +38,7 @@ endm
 VIDEOSEG      = 0b800h     ; - VIDEOSEG textmode
 CMDARGS       = 80h        ; - syms in cmd line , 82h - first symbol in cmd params
 STARTPOINT    = 800d       ; - upper left frame corner
-STARTREGPOINT = STARTPOINT + 160d + 4d
+STARTREGPOINT = STARTPOINT + 164d
 EROORPOINT    = 3052d      ; - upper left error frame corner
 ONE           = 31h        ; - '1' ASCII 
 TWO           = 32h        ; - '2' ASCII 

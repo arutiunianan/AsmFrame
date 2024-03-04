@@ -61,8 +61,6 @@ ControlStrArray01:
   db 0C8h, 0CDh, 0BCh
 
 
-
-
 New09   proc
     push es ds sp bp di si dx cx bx ax
 
@@ -80,7 +78,6 @@ New09   proc
     jmp @@exit09
 
 @@open_frame:
-
     not cs:IsFrameOpen 
 
     in al, 61h
@@ -103,6 +100,7 @@ db  0EAh
 Old09    dd 0
     endp
 
+
 New08   proc
     push es ds sp bp di si dx cx bx ax
 
@@ -122,7 +120,7 @@ New08   proc
     call PrintFrame
     add sp, 10
 
-    push 0e4a9h
+    push 04e03h
     call PrintReg
     add sp, 2
 
@@ -133,7 +131,6 @@ New08   proc
 db  0EAh
 Old08    dd 0
     endp
-
 
 
 PrintFrame proc
@@ -258,12 +255,13 @@ PrintReg    proc
     jne @@print_regs_name
 
     pop cx
-    mov bx, cx
     push cx
-    add bx, cx
-    add bx, bp
-    add bx, 2d
-    mov ax, [bx]
+    add bp, cx
+    add bp, cx
+    add bp, 2d
+    mov ax, [bp]
+    sub bp, cx
+    sub bp, cx
     mov cx, 0d
 @@get_nums:
     call HexToStr
