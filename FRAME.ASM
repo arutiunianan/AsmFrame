@@ -8,11 +8,11 @@ include dosfunc.asm
 ;main
 ;-------------------------
 ; Stack in func
-; [bp + 10] - height of frame
-; [bp + 8]  - width of frame
-; [bp + 6]  - color of frame and text syms
-; [bp + 4]  - address of array
-; [bp + 2]  - address of text first sym
+; [bp + 10] - height of frame                   
+; [bp + 8]  - width of frame                    
+; [bp + 6]  - color of frame and text syms      
+; [bp + 4]  - address of array                
+; [bp + 2]  - address of text first sym      
 ; [bp]      - address for ret
 ;
 ;-------------------------
@@ -51,6 +51,7 @@ Start:
         call WriteText
 
         ExitDos
+        
 
 
 ;-------------------------
@@ -148,7 +149,7 @@ ReadHexNum proc
 ; ReadDecDig
 ;
 ; Read a symbol from the command line and turns 
-; it into a dec number
+; it into a decimal number
 ;
 ; Entry: SI - Addr of sym in command line
 ; Destr: AX - Digit from command line
@@ -167,9 +168,9 @@ ReadDecDig  proc
 ; ReadHexDig
 ;
 ; Read a symbol from the command line and turns 
-; it into a hex number
+; it into a hexadecimal number
 ;
-; Entry: SI - Addr of sym in command line
+; Entry: SI - Address of sym in command line
 ; Destr: AX - Digit from command line
 ; Exit:  AX
 ;-------------------------
@@ -291,19 +292,27 @@ PrintFrame proc
         mov ah, SHADOWclr
         mov al, SHADOWSym
 
-@@print_shadow:
+@@print_column:
         add di, 160
         mov es:[di], ax
+        ;and byte ptr es:[di], 10000111b
         sub cx, 1
 
         cmp cx, 0
-        jne @@print_shadow
+        jne @@print_column
         
         mov di, [bp + 10]
         imul di, 160
         add di, STARTPOINT + 2
+
         mov cx, [bp + 8]
+@@print_row:
         rep stosw
+        ;and byte ptr es:[di], 10000111b
+        add di, 2
+        ;sub cx, 1
+        cmp cx, 0
+        jne @@print_row
 
         ret
         endp
