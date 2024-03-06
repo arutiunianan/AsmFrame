@@ -11,9 +11,9 @@ include dosfunc.asm
 ; [bp + 10] - height of frame                   
 ; [bp + 8]  - width of frame                    
 ; [bp + 6]  - color of frame and text syms      
-; [bp + 4]  - address of array                
-; [bp + 2]  - address of text first sym      
-; [bp]      - address for ret
+; [bp + 4]  - Addressess of array                
+; [bp + 2]  - Addressess of text first sym      
+; [bp]      - Addressess for ret
 ;
 ;-------------------------
 Start:
@@ -35,12 +35,12 @@ Start:
         call ReadHexNum
         push bx
 
-;----address of array----
+;----Addressess of array----
         push si
         call ReadArr
         pop di
 
-;----address of text first sym----
+;----Addressess of text first sym----
         add di, ax
         push si
         mov si, di
@@ -60,7 +60,7 @@ Start:
 ; Calls a function that reads dec digits from the command 
 ; line and combines them into a number
 ;
-; Entry: SI - Addr of sym in command line
+; Entry: SI - Address of sym in command line
 ; Destr: AX - Digit from func
 ;        BX - Dec number
 ;        DX - Symbol from command line
@@ -103,7 +103,7 @@ ReadDecNum proc
 ; Calls a function that reads hex digits from the command 
 ; line and combines them into a number
 ;
-; Entry: SI - Addr of sym in command line
+; Entry: SI - Address of sym in command line
 ; Destr: AX - Digit from func
 ;        BX - Hex number
 ;        DX - Symbol from command line
@@ -151,7 +151,7 @@ ReadHexNum proc
 ; Read a symbol from the command line and turns 
 ; it into a decimal number
 ;
-; Entry: SI - Addr of sym in command line
+; Entry: SI - Address of sym in command line
 ; Destr: AX - Digit from command line
 ; Exit:  AX
 ;-------------------------
@@ -170,7 +170,7 @@ ReadDecDig  proc
 ; Read a symbol from the command line and turns 
 ; it into a hexadecimal number
 ;
-; Entry: SI - Address of sym in command line
+; Entry: SI - Addressess of sym in command line
 ; Destr: AX - Digit from command line
 ; Exit:  AX
 ;-------------------------
@@ -190,7 +190,7 @@ ReadHexDig  proc
 ; Reads from the command line a digit - the array number 
 ; or a sequence of 9 symbol starting with USERARRAY
 ;
-; Entry: SI - Addr of sym in command line
+; Entry: SI - Address of sym in command line
 ; Destr: AX - Length of command line of array part
 ;        DX - Symbol from command line
 ; Exit:  SI, AX
@@ -238,10 +238,10 @@ ReadArr proc
 ; Print frame columns using the line symbol print function
 ; and print shadow
 ;
-; Entry: SI - Addr of syms in array
-;        SP - Addr of last value in stack
+; Entry: SI - Address of syms in array
+;        SP - Address of last value in stack
 ; Destr: AH - Color of frame symbols
-;        BP - Addr of last value in stack
+;        BP - Address of last value in stack
 ;        CX - Number of repetitions of the line
 ;        DI - Line printing start point
 ; Exit:  -
@@ -289,13 +289,12 @@ PrintFrame proc
         add di, [bp + 8]
         add di, [bp + 8]
         mov cx, [bp + 10]
-        mov ah, SHADOWclr
-        mov al, SHADOWSym
+        mov ah, SHADOWCLR
+        mov al, SHADOWSYM
 
 @@print_column:
         add di, 160
         mov es:[di], ax
-        ;and byte ptr es:[di], 10000111b
         sub cx, 1
 
         cmp cx, 0
@@ -308,9 +307,7 @@ PrintFrame proc
         mov cx, [bp + 8]
 @@print_row:
         rep stosw
-        ;and byte ptr es:[di], 10000111b
         add di, 2
-        ;sub cx, 1
         cmp cx, 0
         jne @@print_row
 
@@ -323,10 +320,10 @@ PrintFrame proc
 ;
 ; Extract symbols from an array and prints a string of them
 ;
-; Entry: SI - Addr of sym in command line
+; Entry: SI - Address of sym in command line
 ;        DI - Line start point
 ; Destr: AX - Symbol for print
-;        BP - Addr of last value in stack before func 
+;        BP - Address of last value in stack before func 
 ;        CX - Number of repetitions of syms
 ;        DI - Printing point
 ; Exit:  -
@@ -367,9 +364,9 @@ PrintLine proc
 ;
 ; Print text into a frame from the command line
 ;
-; Entry: SP - Addr of last value in stack
+; Entry: SP - Address of last value in stack
 ; Destr: AX - Symbol for print
-;        BP - Addr of last value in stack 
+;        BP - Address of last value in stack 
 ;        CX - Text length
 ;        DI - Printing point
 ; Exit:  -
@@ -415,9 +412,9 @@ WriteText proc
 ; Func for printing frame when input error detected
 ;
 ; Entry: -
-; Destr: SI - Addr of syms in error array
+; Destr: SI - Address of syms in error array
 ;        AX - Symbol for print
-;        BP - Addr of last value in stack 
+;        BP - Address of last value in stack 
 ;        CX - 1. Number of line 2. Number of repetitions of syms
 ;        DI - Error printing point
 ; Exit:  -
